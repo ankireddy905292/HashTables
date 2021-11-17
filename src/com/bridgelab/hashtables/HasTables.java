@@ -1,4 +1,7 @@
 package com.bridgelab.hashtables;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class HasTables {
     private HashNode Array[];
@@ -12,7 +15,7 @@ public class HasTables {
         this.size = 0;
     }
     public HasTables() {
-        this(10);
+        this(100);
     }
 
     //Create HashNode like Linked list one link and two data types
@@ -60,7 +63,7 @@ public class HasTables {
     //Checking given string no.of times in Hash Table
     public int freqChecker(String value) {
         HashNode node = Array[0];
-        int wordCount = 0;
+        int wordCount = 1;
         while (node != null) {
             if (node.value.equals(value)) {
                 wordCount++;
@@ -70,11 +73,54 @@ public class HasTables {
         return wordCount;
     }
 
+    //Checking the values of the key
+    public String getKeyValue(Integer key){
+        int arrayIndex = getArrayIndex(key);
+        HashNode head = Array[arrayIndex];
+        while (head != null){
+            if (head.key.equals(key)){
+                return head.value;
+            }
+            head = head.next;
+        }
+        return null;
+    }
+
+
+    //find frequency of words in a large paragraph phrase
+    public void freqOfWords(String str){
+        Map<String, Integer> map = new TreeMap<>();
+        String arr[] = str.split(" ");
+        for (int i=0; i<arr.length; i++){
+            if(map.containsKey(arr[i])){
+                map.put(arr[i], map.get(arr[i])+1);
+            }else {
+                map.put(arr[i], 1);
+            }
+        }
+        for (Map.Entry<String, Integer> entry: map.entrySet()){
+            System.out.println(entry.getKey()+ "--->"+entry.getValue());
+        }
+    }
+
+    public void remWord(String str) {
+        Map<String, Integer> map = new TreeMap<>();
+
+        Iterator <String> word = map.keySet().iterator();
+        while (word.hasNext()){
+            if (word.next().equals(str)){
+                word.remove();
+            }
+        }
+    }
+
+
 
     public static void main(String[] args) {
+
         //Create obj HashTable and HashNode like Linked list by using HashTable class
         HasTables hashTable = new HasTables();
-        hashTable.putData(10,"To");
+        hashTable.putData(10, "To");
         hashTable.putData(20, "be");
         hashTable.putData(30, "or");
         hashTable.putData(40, "not");
@@ -90,9 +136,21 @@ public class HasTables {
         //Checking size of the HashTable
         System.out.println("The size of hash table : " + hashTable.size);
 
-    }
-}
 
+        //Checking the values of the key
+        System.out.println("Finding Given key value : "+hashTable.getKeyValue(20));
+
+        String paraString = "paranoids are not paranoids because they are paranoid but they keep putting themselves deliberately into paranoid avoidable situation";
+        System.out.println("Given Para String : " + paraString);
+        hashTable.freqOfWords(paraString);
+
+        hashTable.remWord("they");
+
+
+
+    }
+
+}
 
 
 
