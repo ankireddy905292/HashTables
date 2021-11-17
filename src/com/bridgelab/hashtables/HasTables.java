@@ -1,138 +1,88 @@
 package com.bridgelab.hashtables;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class HasTables {
-    private HashNode Array[];
-    private int noOfArrays;
-    private int size;
+    //Represent a node of the singly linked list
+    public static class Node {
+        private int data;
+        private Node next;
 
-    //Create HashTable custom array Constructor
-    public HasTables(int x) {
-        this.noOfArrays = x;
-        this.Array = new HashNode[noOfArrays];
-        this.size = 0;
+        //Parameter and Default Constructors
+        public Node(int x) {
+            this.data = x;
+            this.next = null;
+        }
+        public Node(){
+        }
     }
-    public HasTables() {
-        this(100);
+    //Represent the 'Stack Pointer' like top as of the singly linked list
+    private Node top = null;
+
+    /// Method to push int element in the stack
+    public void push(int x){
+        Node node = new Node(x);
+        if (node == null){
+            System.out.println("Stack is Under flow");
+            node.next = null;
+        }else {
+            node.next = top;
+        }
+        top = node;
+        System.out.println("Successfully pushed " + x);
     }
 
-    //Create HashNode like Linked list one link and two data types
-    public class HashNode {
-        private Integer key;
-        private String value;
-        private HashNode next;
-
-        //Create HashNode like Linked list Constructor
-        public HashNode(Integer key, String value) {
-            this.key = key;
-            this.value = value;
+    /// Method to display stack in First In Last Out Order
+    public void display(){
+        if (top == null)
+            System.out.println("Stack is Under flow");
+        Node temp = new Node();
+        temp = top;
+        System.out.println("Stack Contains data in 'First In Last Out' Order : ");
+        while (temp != null){
+            System.out.println(+temp.data);
+            temp = temp.next;
         }
     }
 
-    //Fix the index depending on the key value for reducing the no of searching iterations
-    public int getArrayIndex(Integer key) {
-        int index = key % noOfArrays;
-        return index;
+    //Method to display the stack Peek value
+    public void peek(){
+        if (top == null)
+            System.out.println("Stack is underflow");
+        else
+            System.out.println("Stack Peak value is : " + top.data);
     }
 
-    //Put data in Hash Table using linked Node
-    public void putData(Integer key, String value) {
-        if (key == null || value == null) {
-            System.out.println("key or value are null");
+    //Method to display the stack Pop value
+    public void pop(){
+        if (top == null)
+            System.out.println("Stack is underflow");
+        else{
+            System.out.println("Stack Pop value is : " + top.data);
+            top = top.next;
         }
-        int arrayIndex = getArrayIndex(key);
-        HashNode head = Array[arrayIndex];
-        // check existing node in hash table
-        while (head != null) {
-            if (head.key.equals(key)) {
-                head.value = value;
-                return;
-            }
-            head = head.next;
-        }
-        size++;
-        head = Array[arrayIndex];
-        HashNode node = new HashNode(key, value);
-        node.next = head;
-        Array[arrayIndex] = node;
 
     }
-
-    //Checking given string no.of times in Hash Table
-    public int freqChecker(String value) {
-        HashNode node = Array[0];
-        int wordCount = 1;
-        while (node != null) {
-            if (node.value.equals(value)) {
-                wordCount++;
-            }
-            node = node.next;
-        }
-        return wordCount;
-    }
-
-    //Checking the values of the key
-    public String getKeyValue(Integer key){
-        int arrayIndex = getArrayIndex(key);
-        HashNode head = Array[arrayIndex];
-        while (head != null){
-            if (head.key.equals(key)){
-                return head.value;
-            }
-            head = head.next;
-        }
-        return null;
-    }
-
-
-    //find frequency of words in a large paragraph phrase
-    public void freqOfWords(String str){
-        Map<String, Integer> map = new TreeMap<>();
-        String arr[] = str.split(" ");
-        for (int i=0; i<arr.length; i++){
-            if(map.containsKey(arr[i])){
-                map.put(arr[i], map.get(arr[i])+1);
-            }else {
-                map.put(arr[i], 1);
-            }
-        }
-        for (Map.Entry<String, Integer> entry: map.entrySet()){
-            System.out.println(entry.getKey()+ "--->"+entry.getValue());
-        }
-    }
-
 
     public static void main(String[] args) {
+        HasTables stack = new HasTables();
 
-        //Create obj HashTable and HashNode like Linked list by using HashTable class
-        HasTables hashTable = new HasTables();
-        hashTable.putData(10, "To");
-        hashTable.putData(20, "be");
-        hashTable.putData(30, "or");
-        hashTable.putData(40, "not");
-        hashTable.putData(50, "to");
-        hashTable.putData(60, "be");
-
-        //Checking "To", "be", "or", "not" no.of times in HashTable
-        System.out.println("Frequency of To : "+hashTable.freqChecker("To"));
-        System.out.println("Frequency of be : "+hashTable.freqChecker("be"));
-        System.out.println("Frequency of or : "+hashTable.freqChecker("or"));
-        System.out.println("Frequency of not : "+hashTable.freqChecker("not"));
-
-        //Checking size of the HashTable
-        System.out.println("The size of hash table : " + hashTable.size);
+        //Pushing int elements
+        stack.push(70);
+        stack.push(30);
+        stack.push(56);
 
 
-        //Checking the values of the key
-        System.out.println("Finding Given key value : "+hashTable.getKeyValue(20));
+        //Method to display stack in First In Last Out Order
+        stack.display();
 
-        String paraString = "paranoids are not paranoids because they are paranoid but they keep putting themselves deliberately into paranoid avoidable situation";
-        System.out.println("Given Para String : " + paraString);
-        hashTable.freqOfWords(paraString);
+        //Peak and PoP from the Stack till it is empty
+        while (stack.top != null){
+            stack.peek();
+            stack.pop();
+        }
+        if (stack.top == null)
+            System.out.println("Stack is empty");
     }
-
 }
+
 
 
 
